@@ -10,7 +10,10 @@ import '@mdi/font/css/materialdesignicons.css'
         <v-app-bar-title>531 Calc</v-app-bar-title>
       </v-app-bar>
       <v-main>
-        <RouterView />
+        <v-sheet max-width="400"
+         class="mx-auto px-4">
+          <RouterView />
+        </v-sheet>
       </v-main>
       <v-bottom-navigation>
         <v-btn to="/">
