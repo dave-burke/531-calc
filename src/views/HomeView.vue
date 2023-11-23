@@ -44,6 +44,11 @@ const trainingMax = computed(() => {
     }
 })
 
+function round(x) {
+    // Round down to nearest multiple of 5
+    return Math.floor(x / 5) * 5;
+}
+
 const weight = computed(() => {
     const multiples = {
         5: [0.65, 0.75, 0.85],
@@ -53,13 +58,15 @@ const weight = computed(() => {
 
     const dayMultiples = multiples[day.value];
     return [
-        trainingMax.value * 0.40,
-        trainingMax.value * 0.50,
-        trainingMax.value * 0.60,
-        trainingMax.value * dayMultiples[0],
-        trainingMax.value * dayMultiples[1],
-        trainingMax.value * dayMultiples[2],
+        0.40,
+        0.50,
+        0.60,
+        dayMultiples[0],
+        dayMultiples[1],
+        dayMultiples[2],
     ]
+    .map(x => trainingMax.value * x)
+    .map(x => round(x))
 })
 
 
