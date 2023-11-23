@@ -1,12 +1,11 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
-  }
+export const useTrainingMaxStore = defineStore('trainingMax', () => {
+  const squatMax = ref(0)
+  const benchMax = ref(0)
+  const deadMax = ref(0)
+  const pressMax = ref(0)
 
-  return { count, doubleCount, increment }
+  return { squatMax, benchMax, deadMax, pressMax }
 })
