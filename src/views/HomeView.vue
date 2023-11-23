@@ -50,11 +50,11 @@ function round(x) {
 }
 
 const weight = computed(() => {
-    const multiples = {
-        5: [0.65, 0.75, 0.85],
-        3: [0.70, 0.80, 0.90],
-        1: [0.75, 0.85, 0.95]
-    }
+  const multiples: { [s: number]: Array<number> } = {
+    5: [0.65, 0.75, 0.85],
+    3: [0.7, 0.8, 0.9],
+    1: [0.75, 0.85, 0.95]
+  }
 
     const dayMultiples = multiples[day.value];
     return [

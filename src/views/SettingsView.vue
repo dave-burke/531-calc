@@ -3,11 +3,11 @@ import { storeToRefs } from 'pinia';
 import { useTrainingMaxStore } from '@/stores/trainingMax'
 
 const rules = [
-    value => {
-        // string of digits that can't start with zero
-        if(/^[1-9]\d*$/.test(value)) return true;
-        return "You must enter a positive whole number"
-    }
+  (value: string) => {
+    // string of digits that can't start with zero
+    if (/^[1-9]\d*$/.test(value)) return true
+    return 'You must enter a positive whole number'
+  }
 ]
 
 const { squatMax, benchMax, deadMax, pressMax } = storeToRefs(useTrainingMaxStore())
