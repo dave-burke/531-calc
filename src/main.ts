@@ -9,7 +9,7 @@ import router from './router'
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 
-const vuetify = createVuetify({ })
+const vuetify = createVuetify({})
 
 const app = createApp(App)
 
