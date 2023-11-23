@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTrainingMaxStore } from '@/stores/trainingMax'
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const { squatMax, benchMax, deadMax, pressMax } = storeToRefs(useTrainingMaxStore())
 
@@ -15,6 +15,53 @@ enum Lift {
 }
 
 const lift = ref(Lift.Squat)
+
+const reps = computed(() => {
+    switch(day.value) {
+        case 5:
+            return [5,5,5,5,5,5]
+        case 3:
+            return [5,5,5,3,3,3]
+        case 1:
+            return [5,5,5,5,3,1]
+        default:
+            return [0,0,0,0,0,0]
+    }
+})
+
+const trainingMax = computed(() => {
+    switch(lift.value) {
+        case(Lift.Squat):
+            return squatMax.value
+        case(Lift.Bench):
+            return benchMax.value
+        case(Lift.Dead):
+            return deadMax.value
+        case(Lift.Press):
+            return pressMax.value
+        default:
+            return NaN;
+    }
+})
+
+const weight = computed(() => {
+    const multiples = {
+        5: [0.65, 0.75, 0.85],
+        3: [0.70, 0.80, 0.90],
+        1: [0.75, 0.85, 0.95]
+    }
+
+    const dayMultiples = multiples[day.value];
+    return [
+        trainingMax.value * 0.40,
+        trainingMax.value * 0.50,
+        trainingMax.value * 0.60,
+        trainingMax.value * dayMultiples[0],
+        trainingMax.value * dayMultiples[1],
+        trainingMax.value * dayMultiples[2],
+    ]
+})
+
 
 </script>
 
@@ -32,19 +79,18 @@ const lift = ref(Lift.Squat)
     <v-btn :value="Lift.Press">Press</v-btn>
 </v-btn-toggle>
 <v-table>
+    <thead>
+        <tr>
+            <th>#</th><th>Reps</th><th>Weight</th>
+        </tr>
+    </thead>
     <tbody>
-        <tr>
-            <td>Squat</td><td>{{ squatMax }}</td>
-        </tr>
-        <tr>
-            <td>Bench Press</td><td>{{ benchMax }}</td>
-        </tr>
-        <tr>
-            <td>Deadlift</td><td>{{ deadMax }}</td>
-        </tr>
-        <tr>
-            <td>Overhead Press</td><td>{{ pressMax }}</td>
-        </tr>
+        <tr><td>1</td><td>{{ reps[0] }}</td><td>{{ weight[0] }}</td></tr>
+        <tr><td>2</td><td>{{ reps[1] }}</td><td>{{ weight[1] }}</td></tr>
+        <tr><td>3</td><td>{{ reps[2] }}</td><td>{{ weight[2] }}</td></tr>
+        <tr><td>4</td><td>{{ reps[3] }}</td><td>{{ weight[3] }}</td></tr>
+        <tr><td>5</td><td>{{ reps[4] }}</td><td>{{ weight[4] }}</td></tr>
+        <tr><td>6</td><td>{{ reps[5] }}+</td><td>{{ weight[5] }}</td></tr>
     </tbody>
 </v-table>
 
