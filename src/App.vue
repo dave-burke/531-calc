@@ -1,6 +1,22 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+import { useTheme } from 'vuetify'
+import { useLocalStorage } from '@vueuse/core'
 import '@mdi/font/css/materialdesignicons.css'
+import { onMounted } from 'vue';
+
+const theme = useTheme()
+
+const themeName = useLocalStorage('theme', 'light');
+
+function toggleTheme() {
+  themeName.value = theme.global.current.value.dark ? 'light' : 'dark'
+  theme.global.name.value = themeName.value
+}
+
+onMounted(() => {
+  theme.global.name.value = themeName.value;
+})
 </script>
 
 <template>
@@ -8,6 +24,10 @@ import '@mdi/font/css/materialdesignicons.css'
     <v-layout>
       <v-app-bar color="primary" density="compact">
         <v-app-bar-title>531 Calculator</v-app-bar-title>
+        <v-spacer></v-spacer>
+        <v-btn @click="toggleTheme" icon>
+          <v-icon>mdi-brightness-6</v-icon>
+        </v-btn>
       </v-app-bar>
       <v-main>
         <v-sheet max-width="400" class="mx-auto px-4">
