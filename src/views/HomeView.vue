@@ -66,12 +66,12 @@ const weight = computed(() => {
 
 <template>
   <h1>Home</h1>
-  <v-btn-toggle v-model="day" shaped mandatory class="my-2">
-    <v-btn :value="5">5</v-btn>
-    <v-btn :value="3">3</v-btn>
-    <v-btn :value="1">1</v-btn>
+  <v-btn-toggle elevation="1" v-model="day" divided mandatory class="my-2">
+    <v-btn :value="5">5/5/5</v-btn>
+    <v-btn :value="3">3/3/3</v-btn>
+    <v-btn :value="1">5/3/1</v-btn>
   </v-btn-toggle>
-  <v-btn-toggle v-model="lift" shaped mandatory class="my-2">
+  <v-btn-toggle elevation="2" v-model="lift" divided mandatory class="my-2">
     <v-btn :value="Lift.Squat">Squat</v-btn>
     <v-btn :value="Lift.Bench">Bench</v-btn>
     <v-btn :value="Lift.Dead">Deadlift</v-btn>
