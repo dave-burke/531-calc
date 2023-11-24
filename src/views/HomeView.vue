@@ -4,10 +4,6 @@ import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 
-const { squatMax, benchMax, deadMax, pressMax } = storeToRefs(useTrainingMaxStore())
-
-const day = useLocalStorage('day', 5)
-
 enum Lift {
   Squat,
   Dead,
@@ -15,20 +11,29 @@ enum Lift {
   Press
 }
 
-const lift = useLocalStorage('lift', Lift.Squat)
+class LiftingSet {
+  setNumber: number;
+  reps: number;
+  percent: number;
 
-const reps = computed(() => {
-  switch (day.value) {
-    case 5:
-      return [5, 5, 5, 5, 5, 5]
-    case 3:
-      return [5, 5, 5, 3, 3, 3]
-    case 1:
-      return [5, 5, 5, 5, 3, 1]
-    default:
-      return [0, 0, 0, 0, 0, 0]
+  constructor(setNumber: number, reps: number, percent: number) {
+    this.setNumber = setNumber;
+    this.reps = reps;
+    this.percent = percent;
   }
-})
+
+  calcWeight(trainingMax: number): number {
+    const weight = trainingMax * this.percent;
+    // Round down to nearest multiple of 5
+    return Math.floor(weight / 5) * 5;
+  }
+}
+
+const { squatMax, benchMax, deadMax, pressMax } = storeToRefs(useTrainingMaxStore())
+
+const day = useLocalStorage('day', 5)
+const lift = useLocalStorage('lift', Lift.Squat)
+const deloadScheme = useLocalStorage('deload', 1)
 
 const trainingMax = computed(() => {
   switch (lift.value) {
@@ -45,23 +50,83 @@ const trainingMax = computed(() => {
   }
 })
 
-function round(x: number) {
-  // Round down to nearest multiple of 5
-  return Math.floor(x / 5) * 5
+function deloadSets(deload: number): Array<LiftingSet> {
+  switch(deload) {
+    case 1:
+      return [
+        new LiftingSet(1, 5, 0.40),
+        new LiftingSet(2, 5, 0.50),
+        new LiftingSet(3, 5, 0.60),
+      ]
+    case 2:
+      return [
+        new LiftingSet(1, 5, 0.50),
+        new LiftingSet(2, 5, 0.60),
+        new LiftingSet(3, 5, 0.70),
+      ]
+    case 3: 
+      return [
+        new LiftingSet(1, 3, 0.65),
+        new LiftingSet(2, 3, 0.75),
+        new LiftingSet(3, 3, 0.85),
+      ]
+    case 4:
+      return [
+        new LiftingSet(1, 10, 0.40),
+        new LiftingSet(2, 8, 0.50),
+        new LiftingSet(3, 6, 0.60),
+      ]
+    case 5:
+      return [
+        new LiftingSet(1, 10, 0.50),
+        new LiftingSet(2, 8, 0.60),
+        new LiftingSet(3, 6, 0.70),
+      ]
+    default:
+      return []
+  }
 }
 
-const weight = computed(() => {
-  const multiples: { [s: number]: Array<number> } = {
-    5: [0.65, 0.75, 0.85],
-    3: [0.7, 0.8, 0.9],
-    1: [0.75, 0.85, 0.95]
-  }
+const warmupSets: Array<LiftingSet> = [
+    new LiftingSet(1, 5, 0.40),
+    new LiftingSet(2, 5, 0.50),
+    new LiftingSet(3, 5, 0.60),
+]
 
-  const dayMultiples = multiples[day.value]
-  return [0.4, 0.5, 0.6, dayMultiples[0], dayMultiples[1], dayMultiples[2]]
-    .map((x) => trainingMax.value * x)
-    .map((x) => round(x))
+function workingSets(day: number): Array<LiftingSet> {
+  switch(day) {
+    case 5:
+      return [
+        new LiftingSet(1, 5, 0.65),
+        new LiftingSet(2, 5, 0.75),
+        new LiftingSet(3, 5, 0.85),
+      ]
+    case 3:
+      return [
+        new LiftingSet(1, 3, 0.70),
+        new LiftingSet(2, 3, 0.80),
+        new LiftingSet(3, 3, 0.90),
+      ]
+    case 1:
+      return [
+        new LiftingSet(1, 5, 0.75),
+        new LiftingSet(2, 3, 0.85),
+        new LiftingSet(3, 1, 0.95),
+      ]
+    default:
+      return []
+  }
+}
+
+const allSets = computed(() => {
+  if(day.value === 0) {
+    // deload
+    return deloadSets(deloadScheme.value);
+  } else {
+    return warmupSets.concat(workingSets(day.value))
+  }
 })
+
 </script>
 
 <template>
@@ -69,6 +134,15 @@ const weight = computed(() => {
     <v-btn :value="5">5/5/5</v-btn>
     <v-btn :value="3">3/3/3</v-btn>
     <v-btn :value="1">5/3/1</v-btn>
+    <v-btn :value="0">Deload</v-btn>
+  </v-btn-toggle>
+  <p>Deload scheme:</p>
+  <v-btn-toggle v-if="day === 0" elevation="2" v-model="deloadScheme" divided mandatory class="my-2">
+    <v-btn :value="1">1</v-btn>
+    <v-btn :value="2">2</v-btn>
+    <v-btn :value="3">3</v-btn>
+    <v-btn :value="4">4</v-btn>
+    <v-btn :value="5">5</v-btn>
   </v-btn-toggle>
   <v-btn-toggle elevation="2" v-model="lift" divided mandatory class="my-2">
     <v-btn :value="Lift.Squat">Squat</v-btn>
@@ -85,35 +159,10 @@ const weight = computed(() => {
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>{{ reps[0] }}</td>
-        <td>{{ weight[0] }}</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>{{ reps[1] }}</td>
-        <td>{{ weight[1] }}</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>{{ reps[2] }}</td>
-        <td>{{ weight[2] }}</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>{{ reps[3] }}</td>
-        <td>{{ weight[3] }}</td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>{{ reps[4] }}</td>
-        <td>{{ weight[4] }}</td>
-      </tr>
-      <tr>
-        <td>6</td>
-        <td>{{ reps[5] }}+</td>
-        <td>{{ weight[5] }}</td>
+      <tr v-for="set of allSets" :key="set.setNumber">
+        <td>{{set.setNumber}}</td>
+        <td>{{ set.reps }}</td>
+        <td>{{ set.calcWeight(trainingMax) }}</td>
       </tr>
     </tbody>
   </v-table>
