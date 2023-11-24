@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useTrainingMaxStore } from '@/stores/trainingMax'
 import { storeToRefs } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
+import { useLocalStorage } from '@vueuse/core'
 
 const { squatMax, benchMax, deadMax, pressMax } = storeToRefs(useTrainingMaxStore())
 
-const day = ref(5)
+const day = useLocalStorage('day', 5)
 
 enum Lift {
   Squat,
@@ -14,7 +15,7 @@ enum Lift {
   Press
 }
 
-const lift = ref(Lift.Squat)
+const lift = useLocalStorage('lift', Lift.Squat)
 
 const reps = computed(() => {
   switch (day.value) {
