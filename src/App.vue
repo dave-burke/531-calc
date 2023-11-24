@@ -7,7 +7,7 @@ import '@mdi/font/css/materialdesignicons.css'
   <v-app>
     <v-layout>
       <v-app-bar color="primary" density="compact">
-        <v-app-bar-title>531 Calc</v-app-bar-title>
+        <v-app-bar-title>531 Calculator</v-app-bar-title>
       </v-app-bar>
       <v-main>
         <v-sheet max-width="400" class="mx-auto px-4">
