@@ -18,24 +18,28 @@ const { squatMax, benchMax, deadMax, pressMax } = storeToRefs(useTrainingMaxStor
     <v-text-field
       label="Squat"
       type="number"
+      step="5"
       v-model.number="squatMax"
       :rules="rules"
     ></v-text-field>
     <v-text-field
       label="Bench Press"
       type="number"
+      step="5"
       v-model.number="benchMax"
       :rules="rules"
     ></v-text-field>
     <v-text-field
       label="Deadlift"
       type="number"
+      step="5"
       v-model.number="deadMax"
       :rules="rules"
     ></v-text-field>
     <v-text-field
       label="Overhead Press"
       type="number"
+      step="5"
       v-model.number="pressMax"
       :rules="rules"
     ></v-text-field>
