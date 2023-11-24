@@ -79,7 +79,7 @@ const weight = computed(() => {
   <v-table>
     <thead>
       <tr>
-        <th>#</th>
+        <th>Set</th>
         <th>Reps</th>
         <th>Weight</th>
       </tr>
