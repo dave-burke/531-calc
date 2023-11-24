@@ -14,10 +14,12 @@ enum Lift {
 class LiftingSet {
   reps: number
   percent: number
+  amrap: boolean
 
-  constructor(reps: number, percent: number) {
+  constructor(reps: number, percent: number, amrap: boolean = false) {
     this.reps = reps
     this.percent = percent
+    this.amrap = amrap
   }
 
   get id() {
@@ -79,11 +81,11 @@ const warmupSets: Array<LiftingSet> = [
 function workingSets(day: number): Array<LiftingSet> {
   switch (day) {
     case 5:
-      return [new LiftingSet(5, 0.65), new LiftingSet(5, 0.75), new LiftingSet(5, 0.85)]
+      return [new LiftingSet(5, 0.65), new LiftingSet(5, 0.75), new LiftingSet(5, 0.85, true)]
     case 3:
-      return [new LiftingSet(3, 0.7), new LiftingSet(3, 0.8), new LiftingSet(3, 0.9)]
+      return [new LiftingSet(3, 0.7), new LiftingSet(3, 0.8), new LiftingSet(3, 0.9, true)]
     case 1:
-      return [new LiftingSet(5, 0.75), new LiftingSet(3, 0.85), new LiftingSet(1, 0.95)]
+      return [new LiftingSet(5, 0.75), new LiftingSet(3, 0.85), new LiftingSet(1, 0.95, true)]
     default:
       return []
   }
@@ -143,7 +145,7 @@ const allSets = computed(() => {
     <tbody>
       <tr v-for="(set, index) of allSets" :key="set.id">
         <td>{{ index + 1 }}</td>
-        <td>{{ set.reps }}</td>
+        <td>{{ set.reps }}<span v-if="set.amrap">+</span></td>
         <td>{{ set.calcWeight(trainingMax) }}</td>
       </tr>
     </tbody>
