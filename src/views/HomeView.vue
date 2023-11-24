@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTrainingMaxStore } from '@/stores/trainingMax'
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 
 enum Lift {
@@ -36,6 +36,7 @@ const { squatMax, benchMax, deadMax, pressMax } = storeToRefs(useTrainingMaxStor
 const day = useLocalStorage('day', 5)
 const lift = useLocalStorage('lift', Lift.Squat)
 const deloadScheme = useLocalStorage('deload', 1)
+const jokers = ref<Array<number>>([])
 
 const trainingMax = computed(() => {
   switch (lift.value) {
@@ -93,7 +94,12 @@ const allSets = computed(() => {
     // deload
     return deloadSets(deloadScheme.value)
   } else {
-    return warmupSets.concat(workingSets(day.value))
+    const workout = warmupSets.concat(workingSets(day.value));
+    for(const joker of jokers.value) {
+      const lastSet = workout[workout.length - 1]
+      workout.push(new LiftingSet(lastSet.reps, lastSet.percent + joker))
+    }
+    return workout;
   }
 })
 </script>
@@ -142,4 +148,9 @@ const allSets = computed(() => {
       </tr>
     </tbody>
   </v-table>
+  <div v-if="day !== 0" class="d-flex flex-row justify-space-around ma-2">
+    <v-btn @click="jokers.push(0.05)" class="ma-2">+5%</v-btn>
+    <v-btn @click="jokers.push(0.10)" class="ma-2">+10%</v-btn>
+    <v-btn @click="jokers.splice(0, jokers.length)" class="ma-2">reset</v-btn>
+  </div>
 </template>
