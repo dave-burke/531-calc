@@ -65,8 +65,7 @@ const weight = computed(() => {
 </script>
 
 <template>
-  <h1>Home</h1>
-  <v-btn-toggle elevation="1" v-model="day" divided mandatory class="my-2">
+  <v-btn-toggle elevation="1" v-model="day" divided mandatory class="mt-4 mb-2">
     <v-btn :value="5">5/5/5</v-btn>
     <v-btn :value="3">3/3/3</v-btn>
     <v-btn :value="1">5/3/1</v-btn>
