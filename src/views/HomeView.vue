@@ -12,18 +12,22 @@ enum Lift {
 }
 
 class LiftingSet {
-  reps: number;
-  percent: number;
+  reps: number
+  percent: number
 
   constructor(reps: number, percent: number) {
-    this.reps = reps;
-    this.percent = percent;
+    this.reps = reps
+    this.percent = percent
+  }
+
+  get id() {
+    return crypto.randomUUID()
   }
 
   calcWeight(trainingMax: number): number {
-    const weight = trainingMax * this.percent;
+    const weight = trainingMax * this.percent
     // Round down to nearest multiple of 5
-    return Math.floor(weight / 5) * 5;
+    return Math.floor(weight / 5) * 5
   }
 }
 
@@ -49,82 +53,49 @@ const trainingMax = computed(() => {
 })
 
 function deloadSets(deload: number): Array<LiftingSet> {
-  switch(deload) {
+  switch (deload) {
     case 1:
-      return [
-        new LiftingSet(5, 0.40),
-        new LiftingSet(5, 0.50),
-        new LiftingSet(5, 0.60),
-      ]
+      return [new LiftingSet(5, 0.4), new LiftingSet(5, 0.5), new LiftingSet(5, 0.6)]
     case 2:
-      return [
-        new LiftingSet(5, 0.50),
-        new LiftingSet(5, 0.60),
-        new LiftingSet(5, 0.70),
-      ]
-    case 3: 
-      return [
-        new LiftingSet(3, 0.65),
-        new LiftingSet(3, 0.75),
-        new LiftingSet(3, 0.85),
-      ]
+      return [new LiftingSet(5, 0.5), new LiftingSet(5, 0.6), new LiftingSet(5, 0.7)]
+    case 3:
+      return [new LiftingSet(3, 0.65), new LiftingSet(3, 0.75), new LiftingSet(3, 0.85)]
     case 4:
-      return [
-        new LiftingSet(10, 0.40),
-        new LiftingSet(8, 0.50),
-        new LiftingSet(6, 0.60),
-      ]
+      return [new LiftingSet(10, 0.4), new LiftingSet(8, 0.5), new LiftingSet(6, 0.6)]
     case 5:
-      return [
-        new LiftingSet(10, 0.50),
-        new LiftingSet(8, 0.60),
-        new LiftingSet(6, 0.70),
-      ]
+      return [new LiftingSet(10, 0.5), new LiftingSet(8, 0.6), new LiftingSet(6, 0.7)]
     default:
       return []
   }
 }
 
 const warmupSets: Array<LiftingSet> = [
-    new LiftingSet(5, 0.40),
-    new LiftingSet(5, 0.50),
-    new LiftingSet(5, 0.60),
+  new LiftingSet(5, 0.4),
+  new LiftingSet(5, 0.5),
+  new LiftingSet(5, 0.6)
 ]
 
 function workingSets(day: number): Array<LiftingSet> {
-  switch(day) {
+  switch (day) {
     case 5:
-      return [
-        new LiftingSet(5, 0.65),
-        new LiftingSet(5, 0.75),
-        new LiftingSet(5, 0.85),
-      ]
+      return [new LiftingSet(5, 0.65), new LiftingSet(5, 0.75), new LiftingSet(5, 0.85)]
     case 3:
-      return [
-        new LiftingSet(3, 0.70),
-        new LiftingSet(3, 0.80),
-        new LiftingSet(3, 0.90),
-      ]
+      return [new LiftingSet(3, 0.7), new LiftingSet(3, 0.8), new LiftingSet(3, 0.9)]
     case 1:
-      return [
-        new LiftingSet(5, 0.75),
-        new LiftingSet(3, 0.85),
-        new LiftingSet(1, 0.95),
-      ]
+      return [new LiftingSet(5, 0.75), new LiftingSet(3, 0.85), new LiftingSet(1, 0.95)]
     default:
       return []
   }
 }
 
 const allSets = computed(() => {
-  if(day.value === 0) {
+  if (day.value === 0) {
     // deload
-    return deloadSets(deloadScheme.value);
+    return deloadSets(deloadScheme.value)
   } else {
     return warmupSets.concat(workingSets(day.value))
   }
 })
-
 </script>
 
 <template>
@@ -134,8 +105,15 @@ const allSets = computed(() => {
     <v-btn :value="1">5/3/1</v-btn>
     <v-btn :value="0">Deload</v-btn>
   </v-btn-toggle>
-  <p>Deload scheme:</p>
-  <v-btn-toggle v-if="day === 0" elevation="2" v-model="deloadScheme" divided mandatory class="my-2">
+  <p v-if="day === 0">Deload scheme:</p>
+  <v-btn-toggle
+    v-if="day === 0"
+    elevation="2"
+    v-model="deloadScheme"
+    divided
+    mandatory
+    class="my-2"
+  >
     <v-btn :value="1">1</v-btn>
     <v-btn :value="2">2</v-btn>
     <v-btn :value="3">3</v-btn>
@@ -157,8 +135,8 @@ const allSets = computed(() => {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(set, index) of allSets" :key="set.setNumber">
-        <td>{{index + 1}}</td>
+      <tr v-for="(set, index) of allSets" :key="set.id">
+        <td>{{ index + 1 }}</td>
         <td>{{ set.reps }}</td>
         <td>{{ set.calcWeight(trainingMax) }}</td>
       </tr>
