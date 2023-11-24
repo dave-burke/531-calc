@@ -131,7 +131,7 @@ const allSets = computed(() => {
   <v-btn-toggle elevation="2" v-model="lift" divided mandatory class="my-2">
     <v-btn :value="Lift.Squat">Squat</v-btn>
     <v-btn :value="Lift.Bench">Bench</v-btn>
-    <v-btn :value="Lift.Dead">Deadlift</v-btn>
+    <v-btn :value="Lift.Dead">Dead</v-btn>
     <v-btn :value="Lift.Press">Press</v-btn>
   </v-btn-toggle>
   <v-table>
