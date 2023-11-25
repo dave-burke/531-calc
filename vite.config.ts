@@ -11,7 +11,15 @@ export default defineConfig({
   plugins: [
     vue(),
     vuetify(),
-    VitePWA({ registerType: 'autoUpdate' })
+    VitePWA({
+      registerType: 'autoUpdate',
+      manifest: {
+        name: "531 Calculator",
+        short_name: "531 Calc",
+        description: "A calculator for the 5/3/1 strength training program",
+        theme_color: "#2196f3",
+      },
+    })
   ],
   resolve: {
     alias: {
