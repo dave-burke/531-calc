@@ -96,12 +96,12 @@ const allSets = computed(() => {
     // deload
     return deloadSets(deloadScheme.value)
   } else {
-    const workout = warmupSets.concat(workingSets(day.value));
-    for(const joker of jokers.value) {
+    const workout = warmupSets.concat(workingSets(day.value))
+    for (const joker of jokers.value) {
       const lastSet = workout[workout.length - 1]
       workout.push(new LiftingSet(lastSet.reps, lastSet.percent + joker))
     }
-    return workout;
+    return workout
   }
 })
 </script>
@@ -152,7 +152,7 @@ const allSets = computed(() => {
   </v-table>
   <div v-if="day !== 0" class="d-flex flex-row justify-space-around ma-2">
     <v-btn @click="jokers.push(0.05)" class="ma-2">+5%</v-btn>
-    <v-btn @click="jokers.push(0.10)" class="ma-2">+10%</v-btn>
+    <v-btn @click="jokers.push(0.1)" class="ma-2">+10%</v-btn>
     <v-btn @click="jokers.splice(0, jokers.length)" class="ma-2">reset</v-btn>
   </div>
 </template>

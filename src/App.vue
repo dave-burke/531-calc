@@ -3,11 +3,11 @@ import { RouterView } from 'vue-router'
 import { useTheme } from 'vuetify'
 import { useLocalStorage } from '@vueuse/core'
 import '@mdi/font/css/materialdesignicons.css'
-import { onMounted } from 'vue';
+import { onMounted } from 'vue'
 
 const theme = useTheme()
 
-const themeName = useLocalStorage('theme', 'light');
+const themeName = useLocalStorage('theme', 'light')
 
 function toggleTheme() {
   themeName.value = theme.global.current.value.dark ? 'light' : 'dark'
@@ -15,7 +15,7 @@ function toggleTheme() {
 }
 
 onMounted(() => {
-  theme.global.name.value = themeName.value;
+  theme.global.name.value = themeName.value
 })
 </script>
 
