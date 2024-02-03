@@ -11,6 +11,15 @@ enum Lift {
   Press
 }
 
+enum RoundingMode {
+  NONE,
+  DOWN,
+  HALF_UP,
+  UP,
+}
+
+const showAllRounding = ref(false);
+
 class LiftingSet {
   reps: number
   percent: number
@@ -26,10 +35,30 @@ class LiftingSet {
     return crypto.randomUUID()
   }
 
-  calcWeight(trainingMax: number): number {
+  calcWeight(trainingMax: number, roundingMode: RoundingMode = RoundingMode.DOWN): number {
     const weight = trainingMax * this.percent
-    // Round down to nearest multiple of 5
-    return Math.floor(weight / 5) * 5
+    switch(roundingMode) {
+      case(RoundingMode.NONE):
+        return Math.round(weight);
+      case(RoundingMode.DOWN):
+        return Math.floor(weight / 5) * 5
+      case(RoundingMode.HALF_UP):
+        return Math.round(weight / 5) * 5
+      case(RoundingMode.UP):
+        return Math.ceil(weight / 5) * 5
+    }
+  }
+}
+
+function displayWeight(set: LiftingSet, trainingMax: number) {
+  if(showAllRounding.value === true) {
+    const none = set.calcWeight(trainingMax, RoundingMode.NONE);
+    const down = set.calcWeight(trainingMax, RoundingMode.DOWN);
+    const half = set.calcWeight(trainingMax, RoundingMode.HALF_UP);
+    const up = set.calcWeight(trainingMax, RoundingMode.UP);
+    return `${none} = ${down} / ${half} / ${up}`
+  } else {
+    return set.calcWeight(trainingMax, RoundingMode.DOWN);
   }
 }
 
@@ -139,14 +168,16 @@ const allSets = computed(() => {
       <tr>
         <th>Set</th>
         <th>Reps</th>
-        <th>Weight</th>
+        <th>%</th>
+        <th @click="showAllRounding = !showAllRounding">Weight</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(set, index) of allSets" :key="set.id">
         <td>{{ index + 1 }}</td>
         <td>{{ set.reps }}<span v-if="set.amrap">+</span></td>
-        <td>{{ set.calcWeight(trainingMax) }}</td>
+        <td>{{ set.percent * 100 }}</td>
+        <td>{{ displayWeight(set, trainingMax) }}</td>
       </tr>
     </tbody>
   </v-table>
