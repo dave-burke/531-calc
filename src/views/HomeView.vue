@@ -14,7 +14,6 @@ enum Lift {
 enum RoundingMode {
   NONE,
   DOWN,
-  HALF_UP,
   UP,
 }
 
@@ -42,8 +41,6 @@ class LiftingSet {
         return Math.round(weight);
       case(RoundingMode.DOWN):
         return Math.floor(weight / 5) * 5
-      case(RoundingMode.HALF_UP):
-        return Math.round(weight / 5) * 5
       case(RoundingMode.UP):
         return Math.ceil(weight / 5) * 5
     }
@@ -54,9 +51,8 @@ function displayWeight(set: LiftingSet, trainingMax: number) {
   if(showAllRounding.value === true) {
     const none = set.calcWeight(trainingMax, RoundingMode.NONE);
     const down = set.calcWeight(trainingMax, RoundingMode.DOWN);
-    const half = set.calcWeight(trainingMax, RoundingMode.HALF_UP);
     const up = set.calcWeight(trainingMax, RoundingMode.UP);
-    return `${none} = ${down} / ${half} / ${up}`
+    return `${none} = ${down} / ${up}`
   } else {
     return set.calcWeight(trainingMax, RoundingMode.DOWN);
   }
