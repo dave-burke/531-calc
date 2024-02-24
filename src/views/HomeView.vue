@@ -172,7 +172,7 @@ const allSets = computed(() => {
       <tr v-for="(set, index) of allSets" :key="set.id">
         <td>{{ index + 1 }}</td>
         <td>{{ set.reps }}<span v-if="set.amrap">+</span></td>
-        <td>{{ set.percent * 100 }}</td>
+        <td>{{ Math.round(set.percent * 100) }}</td>
         <td>{{ displayWeight(set, trainingMax) }}</td>
       </tr>
     </tbody>
