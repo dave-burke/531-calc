@@ -17,7 +17,7 @@ enum RoundingMode {
   UP,
 }
 
-const showAllRounding = ref(false);
+const showDetails = ref(false);
 
 class LiftingSet {
   reps: number
@@ -48,11 +48,10 @@ class LiftingSet {
 }
 
 function displayWeight(set: LiftingSet, trainingMax: number) {
-  if(showAllRounding.value === true) {
+  if(showDetails.value === true) {
     const none = set.calcWeight(trainingMax, RoundingMode.NONE);
     const down = set.calcWeight(trainingMax, RoundingMode.DOWN);
-    const up = set.calcWeight(trainingMax, RoundingMode.UP);
-    return `${none} = ${down} / ${up}`
+    return `${none} → ${down}`
   } else {
     return set.calcWeight(trainingMax, RoundingMode.DOWN);
   }
@@ -160,19 +159,19 @@ const allSets = computed(() => {
     <v-btn :value="Lift.Press">Press</v-btn>
   </v-btn-toggle>
   <v-table>
-    <thead>
+    <thead @click="showDetails = !showDetails">
       <tr>
         <th>Set</th>
         <th>Reps</th>
-        <th>%</th>
-        <th @click="showAllRounding = !showAllRounding">Weight</th>
+        <th v-if="showDetails">%</th>
+        <th>Weight</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(set, index) of allSets" :key="set.id">
         <td>{{ index + 1 }}</td>
         <td>{{ set.reps }}<span v-if="set.amrap">+</span></td>
-        <td>{{ Math.round(set.percent * 100) }}</td>
+        <td v-if="showDetails">{{ Math.round(set.percent * 100) }}</td>
         <td>{{ displayWeight(set, trainingMax) }}</td>
       </tr>
     </tbody>
