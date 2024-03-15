@@ -11,6 +11,22 @@ const rules = [
 ]
 
 const { squatMax, benchMax, deadMax, pressMax } = storeToRefs(useTrainingMaxStore())
+
+function incrementLegs(amount: number) {
+  squatMax.value += amount;
+  deadMax.value += amount;
+}
+
+function incrementArms(amount: number) {
+  benchMax.value += amount;
+  pressMax.value += amount;
+}
+
+function incrementAll(amount: number) {
+  incrementLegs(amount);
+  incrementArms(amount);
+}
+
 </script>
 <template>
   <h1>Training Max</h1>
@@ -44,4 +60,11 @@ const { squatMax, benchMax, deadMax, pressMax } = storeToRefs(useTrainingMaxStor
       :rules="rules"
     ></v-text-field>
   </v-form>
+  <v-row align-content="center" justify="center">
+    <v-btn-group elevation="1" divided class="mb-4">
+      <v-btn @click="incrementAll(5)">+5</v-btn>
+      <v-btn @click="incrementAll(10)">+10</v-btn>
+      <v-btn @click="incrementArms(5); incrementLegs(10)">+5/10</v-btn>
+    </v-btn-group>
+  </v-row>
 </template>
