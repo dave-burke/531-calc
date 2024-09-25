@@ -8,7 +8,8 @@ enum Lift {
   Squat,
   Dead,
   Bench,
-  Press
+  Press,
+  Other
 }
 
 enum RoundingMode {
@@ -36,12 +37,12 @@ class LiftingSet {
 
   calcWeight(trainingMax: number, roundingMode: RoundingMode = RoundingMode.DOWN): number {
     const weight = trainingMax * this.percent
-    switch(roundingMode) {
-      case(RoundingMode.NONE):
-        return Math.round(weight);
-      case(RoundingMode.DOWN):
+    switch (roundingMode) {
+      case RoundingMode.NONE:
+        return Math.round(weight)
+      case RoundingMode.DOWN:
         return Math.floor(weight / 5) * 5
-      case(RoundingMode.UP):
+      case RoundingMode.UP:
         return Math.ceil(weight / 5) * 5
     }
   }
@@ -59,6 +60,8 @@ function displayWeight(set: LiftingSet, trainingMax: number) {
 
 const { squatMax, benchMax, deadMax, pressMax } = storeToRefs(useTrainingMaxStore())
 
+const otherMax = useLocalStorage('otherMax', 45)
+
 const day = useLocalStorage('day', 5)
 const lift = useLocalStorage('lift', Lift.Squat)
 const deloadScheme = useLocalStorage('deload', 1)
@@ -74,6 +77,8 @@ const trainingMax = computed(() => {
       return deadMax.value
     case Lift.Press:
       return pressMax.value
+    case Lift.Other:
+      return otherMax.value
     default:
       return NaN
   }
@@ -157,7 +162,9 @@ const allSets = computed(() => {
     <v-btn :value="Lift.Bench">Bench</v-btn>
     <v-btn :value="Lift.Dead">Dead</v-btn>
     <v-btn :value="Lift.Press">Press</v-btn>
+    <v-btn :value="Lift.Other"><v-icon icon="mdi-calculator"></v-icon></v-btn>
   </v-btn-toggle>
+  <v-text-field v-if="lift === Lift.Other" v-model="otherMax"></v-text-field>
   <v-table>
     <thead @click="showDetails = !showDetails">
       <tr>

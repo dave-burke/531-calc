@@ -30,7 +30,7 @@ onMounted(() => {
         </v-btn>
       </v-app-bar>
       <v-main>
-        <v-sheet max-width="400" class="mx-auto px-4">
+        <v-sheet max-width="450" class="mx-auto px-4">
           <RouterView />
         </v-sheet>
       </v-main>
