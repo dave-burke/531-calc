@@ -158,12 +158,13 @@ const allSets = computed(() => {
     <v-btn :value="5">5</v-btn>
   </v-btn-toggle>
   <v-btn-toggle elevation="2" v-model="lift" divided mandatory class="my-2">
-    <v-btn :value="Lift.Squat">Squat</v-btn>
-    <v-btn :value="Lift.Bench">Bench</v-btn>
-    <v-btn :value="Lift.Dead">Dead</v-btn>
-    <v-btn :value="Lift.Press">Press</v-btn>
+    <v-btn :value="Lift.Squat"><img class="png-icon" src="src/assets/squat.png"/></v-btn>
+    <v-btn :value="Lift.Bench"><img class="png-icon-bench" src="src/assets/bench.png"/></v-btn>
+    <v-btn :value="Lift.Dead"><img class="png-icon" src="src/assets/dead.png"/></v-btn>
+    <v-btn :value="Lift.Press"><img class="png-icon" src="src/assets/press.png"/></v-btn>
     <v-btn :value="Lift.Other"><v-icon icon="mdi-calculator"></v-icon></v-btn>
   </v-btn-toggle>
+
   <v-text-field v-if="lift === Lift.Other" v-model="otherMax"></v-text-field>
   <v-table>
     <thead @click="showDetails = !showDetails">
@@ -189,3 +190,12 @@ const allSets = computed(() => {
     <v-btn @click="jokers.splice(0, jokers.length)" class="ma-2">reset</v-btn>
   </div>
 </template>
+<style scoped>
+.png-icon {
+  max-width: 2rem;
+}
+.png-icon-bench {
+  /* The bench icon is slightly bigger */
+  max-width: 1.4rem;
+}
+</style>

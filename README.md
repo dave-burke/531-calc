@@ -69,3 +69,9 @@ npm run test:e2e -- --debug
 ```sh
 npm run lint
 ```
+
+## Acknowledgements
+
+### Icons
+
+[Barbell icons created by Leremy - Flaticon](https://www.flaticon.com/free-icons/barbell)
