@@ -136,34 +136,38 @@ const allSets = computed(() => {
 </script>
 
 <template>
-  <v-btn-toggle elevation="1" v-model="day" divided mandatory class="mt-4 mb-2">
-    <v-btn :value="5">5/5/5</v-btn>
-    <v-btn :value="3">3/3/3</v-btn>
-    <v-btn :value="1">5/3/1</v-btn>
-    <v-btn :value="0">Deload</v-btn>
-  </v-btn-toggle>
-  <p v-if="day === 0">Deload scheme:</p>
-  <v-btn-toggle
-    v-if="day === 0"
-    elevation="2"
-    v-model="deloadScheme"
-    divided
-    mandatory
-    class="my-2"
-  >
-    <v-btn :value="1">1</v-btn>
-    <v-btn :value="2">2</v-btn>
-    <v-btn :value="3">3</v-btn>
-    <v-btn :value="4">4</v-btn>
-    <v-btn :value="5">5</v-btn>
-  </v-btn-toggle>
-  <v-btn-toggle elevation="2" v-model="lift" divided mandatory class="my-2">
-    <v-btn :value="Lift.Squat"><img class="png-icon" src="src/assets/squat.png"/></v-btn>
-    <v-btn :value="Lift.Bench"><img class="png-icon-bench" src="src/assets/bench.png"/></v-btn>
-    <v-btn :value="Lift.Dead"><img class="png-icon" src="src/assets/dead.png"/></v-btn>
-    <v-btn :value="Lift.Press"><img class="png-icon" src="src/assets/press.png"/></v-btn>
-    <v-btn :value="Lift.Other"><v-icon icon="mdi-calculator"></v-icon></v-btn>
-  </v-btn-toggle>
+  <v-container>
+    <v-row justify="center">
+      <v-btn-toggle elevation="1" v-model="day" divided mandatory class="mt-4 mb-2">
+        <v-btn :value="5">5/5/5</v-btn>
+        <v-btn :value="3">3/3/3</v-btn>
+        <v-btn :value="1">5/3/1</v-btn>
+        <v-btn :value="0">Deload</v-btn>
+      </v-btn-toggle>
+      <p v-if="day === 0">Deload scheme:</p>
+      <v-btn-toggle
+        v-if="day === 0"
+        elevation="2"
+        v-model="deloadScheme"
+        divided
+        mandatory
+        class="my-2"
+      >
+        <v-btn :value="1">1</v-btn>
+        <v-btn :value="2">2</v-btn>
+        <v-btn :value="3">3</v-btn>
+        <v-btn :value="4">4</v-btn>
+        <v-btn :value="5">5</v-btn>
+      </v-btn-toggle>
+      <v-btn-toggle elevation="2" v-model="lift" divided mandatory class="my-2">
+        <v-btn :value="Lift.Squat"><img class="png-icon" src="src/assets/squat.png"/></v-btn>
+        <v-btn :value="Lift.Bench"><img class="png-icon-bench" src="src/assets/bench.png"/></v-btn>
+        <v-btn :value="Lift.Dead"><img class="png-icon" src="src/assets/dead.png"/></v-btn>
+        <v-btn :value="Lift.Press"><img class="png-icon" src="src/assets/press.png"/></v-btn>
+        <v-btn :value="Lift.Other"><v-icon icon="mdi-calculator"></v-icon></v-btn>
+      </v-btn-toggle>
+    </v-row>
+  </v-container>
 
   <v-text-field v-if="lift === Lift.Other" v-model="otherMax"></v-text-field>
   <v-table>
