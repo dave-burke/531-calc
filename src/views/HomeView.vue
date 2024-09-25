@@ -3,6 +3,7 @@ import { useTrainingMaxStore } from '@/stores/trainingMax'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
+import { useTheme } from 'vuetify';
 
 enum Lift {
   Squat,
@@ -133,6 +134,9 @@ const allSets = computed(() => {
     return workout
   }
 })
+
+const theme = useTheme()
+
 </script>
 
 <template>
@@ -160,10 +164,22 @@ const allSets = computed(() => {
         <v-btn :value="5">5</v-btn>
       </v-btn-toggle>
       <v-btn-toggle elevation="2" v-model="lift" divided mandatory class="my-2">
-        <v-btn :value="Lift.Squat"><img class="png-icon" src="../assets/squat.png"/></v-btn>
-        <v-btn :value="Lift.Bench"><img class="png-icon-bench" src="../assets/bench.png"/></v-btn>
-        <v-btn :value="Lift.Dead"><img class="png-icon" src="../assets/dead.png"/></v-btn>
-        <v-btn :value="Lift.Press"><img class="png-icon" src="../assets/press.png"/></v-btn>
+        <v-btn :value="Lift.Squat">
+          <img v-if="theme.current.value.dark" class="png-icon" src="../assets/icons/squat-dark.png"/>
+          <img v-else class="png-icon dark-only" src="../assets/icons/squat.png"/>
+        </v-btn>
+        <v-btn :value="Lift.Bench">
+          <img v-if="theme.current.value.dark" class="png-icon-bench" src="../assets/icons/bench-dark.png"/>
+          <img v-else class="png-icon-bench dark-only" src="../assets/icons/bench.png"/>
+        </v-btn>
+        <v-btn :value="Lift.Dead">
+          <img v-if="theme.current.value.dark" class="png-icon" src="../assets/icons/dead-dark.png"/>
+          <img v-else class="png-icon dark-only" src="../assets/icons/dead.png"/>
+        </v-btn>
+        <v-btn :value="Lift.Press">
+          <img v-if="theme.current.value.dark" class="png-icon" src="../assets/icons/press-dark.png"/>
+          <img v-else class="png-icon dark-only" src="../assets/icons/press.png"/>
+        </v-btn>
         <v-btn :value="Lift.Other"><v-icon icon="mdi-calculator"></v-icon></v-btn>
       </v-btn-toggle>
     </v-row>
