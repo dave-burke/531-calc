@@ -160,10 +160,10 @@ const allSets = computed(() => {
         <v-btn :value="5">5</v-btn>
       </v-btn-toggle>
       <v-btn-toggle elevation="2" v-model="lift" divided mandatory class="my-2">
-        <v-btn :value="Lift.Squat"><img class="png-icon" src="src/assets/squat.png"/></v-btn>
-        <v-btn :value="Lift.Bench"><img class="png-icon-bench" src="src/assets/bench.png"/></v-btn>
-        <v-btn :value="Lift.Dead"><img class="png-icon" src="src/assets/dead.png"/></v-btn>
-        <v-btn :value="Lift.Press"><img class="png-icon" src="src/assets/press.png"/></v-btn>
+        <v-btn :value="Lift.Squat"><img class="png-icon" src="../assets/squat.png"/></v-btn>
+        <v-btn :value="Lift.Bench"><img class="png-icon-bench" src="../assets/bench.png"/></v-btn>
+        <v-btn :value="Lift.Dead"><img class="png-icon" src="../assets/dead.png"/></v-btn>
+        <v-btn :value="Lift.Press"><img class="png-icon" src="../assets/press.png"/></v-btn>
         <v-btn :value="Lift.Other"><v-icon icon="mdi-calculator"></v-icon></v-btn>
       </v-btn-toggle>
     </v-row>
