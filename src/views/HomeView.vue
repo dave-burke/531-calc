@@ -15,10 +15,10 @@ enum Lift {
 enum RoundingMode {
   NONE,
   DOWN,
-  UP,
+  UP
 }
 
-const showDetails = ref(false);
+const showDetails = ref(false)
 
 class LiftingSet {
   reps: number
@@ -49,12 +49,12 @@ class LiftingSet {
 }
 
 function displayWeight(set: LiftingSet, trainingMax: number) {
-  if(showDetails.value === true) {
-    const none = set.calcWeight(trainingMax, RoundingMode.NONE);
-    const down = set.calcWeight(trainingMax, RoundingMode.DOWN);
+  if (showDetails.value === true) {
+    const none = set.calcWeight(trainingMax, RoundingMode.NONE)
+    const down = set.calcWeight(trainingMax, RoundingMode.DOWN)
     return `${none} → ${down}`
   } else {
-    return set.calcWeight(trainingMax, RoundingMode.DOWN);
+    return set.calcWeight(trainingMax, RoundingMode.DOWN)
   }
 }
 
